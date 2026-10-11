@@ -1,0 +1,365 @@
+[
+  {
+    "key": "enabled",
+    "type": "boolean",
+    "label": "Enable remote access",
+    "help": "Off by default. While off, no request reaches Microsoft and the wallet is never read."
+  },
+  {
+    "key": "secret_ref",
+    "label": "OAuth grant secret",
+    "placeholder": "secret://workspace/microsoft_365",
+    "help": "Wallet reference holding JSON with client_id and refresh_token (plus client_secret for a confidential app), or an access token. Never the token itself."
+  },
+  {
+    "key": "tenant_id",
+    "label": "Tenant",
+    "placeholder": "common",
+    "help": "Directory used for the token request: common, organizations, consumers, a tenant ID or a domain such as contoso.com."
+  },
+  {
+    "key": "operation",
+    "type": "select",
+    "options": [
+      "mail_list",
+      "mail_get",
+      "mail_send",
+      "mail_move",
+      "mail_mark_read",
+      "mail_attachment_download",
+      "mail_watch",
+      "events_list",
+      "event_create",
+      "event_update",
+      "event_delete",
+      "files_list",
+      "file_download",
+      "file_upload",
+      "folder_create",
+      "channel_message_send"
+    ],
+    "label": "Default operation",
+    "help": "Used when a request gives no operation. Changes need Allow writes; sends also need Allow sending."
+  },
+  {
+    "key": "allowed_operations",
+    "type": "json",
+    "rows": 3,
+    "label": "Operations a request may choose",
+    "help": "JSON array of operation names, for example [\"mail_list\", \"mail_get\", \"files_list\"]. The default operation is always allowed."
+  },
+  {
+    "key": "mail_folder",
+    "label": "Mail folder",
+    "placeholder": "inbox",
+    "help": "Folder listed by default and watched for new mail: inbox, archive, sentitems, drafts, deleteditems, junkemail or a folder ID."
+  },
+  {
+    "key": "calendar_id",
+    "label": "Calendar ID",
+    "placeholder": "",
+    "help": "Empty uses the default calendar. Otherwise the ID of another calendar of the account."
+  },
+  {
+    "key": "drive_folder",
+    "label": "OneDrive folder",
+    "placeholder": "Documents/Reports",
+    "help": "OneDrive path listed by default; uploads and new folders always stay inside it. Empty is the drive root."
+  },
+  {
+    "key": "allow_writes",
+    "type": "boolean",
+    "label": "Allow writes",
+    "help": "Off by default. Required to send, move or mark mail, change events, upload files, create folders and post to Teams."
+  },
+  {
+    "key": "allow_send",
+    "type": "boolean",
+    "group": "write",
+    "label": "Allow sending",
+    "help": "Required for mail_send and channel messages, and for invitations, meeting updates or cancellations that notify attendees."
+  },
+  {
+    "key": "allowed_recipients",
+    "type": "json",
+    "rows": 2,
+    "group": "write",
+    "label": "Allowed recipients",
+    "help": "JSON array of addresses or @domain entries, for example [\"team@example.com\", \"@example.com\"]. Every recipient and attendee must match."
+  },
+  {
+    "key": "allowed_channels",
+    "type": "json",
+    "rows": 2,
+    "group": "write",
+    "label": "Allowed Teams channels",
+    "help": "JSON array of \"<team id>/<channel id>\" entries the block may post to."
+  },
+  {
+    "key": "attachment_root",
+    "type": "directory",
+    "group": "write",
+    "label": "Attachment source folder",
+    "placeholder": "/path/to/attachments",
+    "help": "Mail attachments may only be read from inside this folder (3 MiB in total). Empty refuses attachments."
+  },
+  {
+    "key": "upload_root",
+    "type": "directory",
+    "group": "write",
+    "label": "Upload source folder",
+    "placeholder": "/path/to/outgoing",
+    "help": "Local files may only be uploaded to OneDrive from inside this folder. Required for file_upload."
+  },
+  {
+    "key": "allow_delete",
+    "type": "boolean",
+    "group": "write",
+    "label": "Allow deletion",
+    "help": "Required for event_delete (the event goes to Deleted Items) and for replacing existing OneDrive files."
+  },
+  {
+    "key": "conflict_behavior",
+    "type": "select",
+    "options": [
+      "fail",
+      "rename",
+      "replace"
+    ],
+    "group": "write",
+    "label": "When an uploaded file exists",
+    "help": "fail refuses the upload, rename keeps both files, replace needs Allow deletion (OneDrive keeps the previous version)."
+  },
+  {
+    "key": "folder_exists",
+    "type": "select",
+    "options": [
+      "reuse",
+      "fail"
+    ],
+    "group": "write",
+    "label": "When the folder exists",
+    "help": "reuse returns the existing folder; fail reports a conflict."
+  },
+  {
+    "key": "watch_mail",
+    "type": "boolean",
+    "label": "Watch new mail",
+    "help": "Active Runtime only: polls the mail folder for new messages while the Run is loaded. One Shot uses the mail_watch operation instead."
+  },
+  {
+    "key": "watch_interval_sec",
+    "type": "integer",
+    "min": 60,
+    "max": 86400,
+    "group": "watch",
+    "label": "Watch interval (s)",
+    "help": "Time between two polls, at least 60 seconds."
+  },
+  {
+    "key": "emit_existing",
+    "type": "boolean",
+    "group": "watch",
+    "label": "Emit recent mail on first start",
+    "help": "Off: the first start only records the current position. On: mail received in the last hours below is emitted once."
+  },
+  {
+    "key": "existing_since_hours",
+    "type": "integer",
+    "min": 1,
+    "max": 720,
+    "group": "watch",
+    "label": "Recent mail window (h)",
+    "help": "How far back the first start looks when Emit recent mail is on."
+  },
+  {
+    "key": "watch_max_items",
+    "type": "integer",
+    "min": 1,
+    "max": 200,
+    "group": "watch",
+    "label": "Messages per poll (max)",
+    "help": "Upper bound of new messages emitted by one poll; the rest follow on the next poll."
+  },
+  {
+    "key": "list_limit",
+    "type": "integer",
+    "min": 1,
+    "max": 1000,
+    "advanced": true,
+    "label": "Items per listing (max)",
+    "help": "Upper bound for one listing; a request limit can only lower it."
+  },
+  {
+    "key": "page_size",
+    "type": "integer",
+    "min": 1,
+    "max": 200,
+    "advanced": true,
+    "label": "Items per page",
+    "help": "Items requested per Graph page. A page is never cut, so next_page_link resumes exactly."
+  },
+  {
+    "key": "max_pages",
+    "type": "integer",
+    "min": 1,
+    "max": 50,
+    "advanced": true,
+    "label": "Pages per request (max)",
+    "help": "Graph pages per listing or poll; when reached, the result gives next_page_link to continue."
+  },
+  {
+    "key": "window_days",
+    "type": "integer",
+    "min": 1,
+    "max": 366,
+    "advanced": true,
+    "label": "Calendar window (days)",
+    "help": "Length of the events_list window when a request gives no end."
+  },
+  {
+    "key": "time_zone",
+    "advanced": true,
+    "label": "Time zone",
+    "placeholder": "UTC",
+    "help": "Time zone of local event times and of returned event times, for example UTC, Europe/Paris or W. Europe Standard Time."
+  },
+  {
+    "key": "body_format",
+    "type": "select",
+    "options": [
+      "text",
+      "html"
+    ],
+    "advanced": true,
+    "label": "Mail body format",
+    "help": "Body returned by mail_get; a request may choose the other format."
+  },
+  {
+    "key": "max_body_chars",
+    "type": "integer",
+    "min": 256,
+    "max": 1048576,
+    "advanced": true,
+    "label": "Mail body limit (characters)",
+    "help": "Longer bodies are cut and marked truncated in the result."
+  },
+  {
+    "key": "max_attachment_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 3145728,
+    "advanced": true,
+    "label": "Attachment size limit (bytes)",
+    "help": "Per attachment; all attachments of one message stay within 3 MiB."
+  },
+  {
+    "key": "max_upload_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 262144000,
+    "advanced": true,
+    "label": "Upload size limit (bytes)",
+    "help": "Larger files are refused before any request. Files above 4 MB use an upload session."
+  },
+  {
+    "key": "upload_chunk_bytes",
+    "type": "integer",
+    "min": 327680,
+    "max": 62914560,
+    "advanced": true,
+    "label": "Upload chunk size (bytes)",
+    "help": "Upload-session fragment size, a multiple of 327680 (320 KiB)."
+  },
+  {
+    "key": "max_download_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 1073741824,
+    "advanced": true,
+    "label": "Download size limit (bytes)",
+    "help": "Larger files are refused before or during the transfer; a partial file is always removed."
+  },
+  {
+    "key": "max_kept_downloads",
+    "type": "integer",
+    "min": 1,
+    "max": 1000,
+    "advanced": true,
+    "label": "Downloads kept",
+    "help": "Number of downloaded files kept in this node's storage; older downloads are deleted."
+  },
+  {
+    "key": "timeout_sec",
+    "type": "integer",
+    "min": 5,
+    "max": 900,
+    "advanced": true,
+    "label": "Operation deadline (s)",
+    "help": "Total time for one operation or poll, token request, pages, transfer and retries included."
+  },
+  {
+    "key": "max_retries",
+    "type": "integer",
+    "min": 0,
+    "max": 5,
+    "advanced": true,
+    "label": "Retries",
+    "help": "Reads retry after HTTP 429, 5xx or a lost connection; changes only after HTTP 429."
+  },
+  {
+    "key": "max_retry_wait_sec",
+    "type": "integer",
+    "min": 1,
+    "max": 120,
+    "advanced": true,
+    "label": "Longest retry wait (s)",
+    "help": "A Retry-After above this value returns rate_limited instead of waiting."
+  },
+  {
+    "key": "max_request_bytes",
+    "type": "integer",
+    "min": 1024,
+    "max": 1048576,
+    "advanced": true,
+    "label": "Request size limit (bytes)",
+    "help": "Bound for the incoming request and each JSON body sent to Graph (sendMail with attachments: 4 MiB)."
+  },
+  {
+    "key": "max_response_bytes",
+    "type": "integer",
+    "min": 65536,
+    "max": 33554432,
+    "advanced": true,
+    "label": "Response size limit (bytes)",
+    "help": "Larger JSON responses are refused as protocol errors (downloads use their own limit)."
+  },
+  {
+    "key": "oauth_scope",
+    "advanced": true,
+    "label": "OAuth scopes",
+    "placeholder": "https://graph.microsoft.com/.default offline_access",
+    "help": "Scopes sent with the refresh-token request. .default uses the delegated permissions granted to the app."
+  },
+  {
+    "key": "api_base_url",
+    "advanced": true,
+    "label": "Graph API origin",
+    "placeholder": "https://graph.microsoft.com",
+    "help": "Keep https://graph.microsoft.com. Another origin receives the access token; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "login_base_url",
+    "advanced": true,
+    "label": "Sign-in origin",
+    "placeholder": "https://login.microsoftonline.com",
+    "help": "Keep https://login.microsoftonline.com. Used only with a refresh-token grant; plain HTTP only for a loopback test host."
+  },
+  {
+    "key": "ca_file",
+    "advanced": true,
+    "label": "Custom CA file",
+    "placeholder": "/path/to/ca.pem",
+    "help": "Optional absolute PEM file for a privately signed HTTPS origin. TLS verification cannot be disabled."
+  }
+]

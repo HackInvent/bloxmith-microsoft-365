@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "microsoft_365",
+  "block_version": "0.1.0",
+  "maintained_by": "HackInvent",
+  "source": {
+    "algorithm": "block-source-v1",
+    "sha256": "fafafbf758cb729937f0d84ab8088f350923b0d0424750d0c8fdeafcac2a92b6"
+  },
+  "bloxsmith_compatibility": [
+    "1.0.9"
+  ],
+  "tested_with_bloxsmith": "1.0.9",
+  "validations": [
+    {
+      "bloxsmith_version": "1.0.9",
+      "framework_commit": "f1a87f6369d2acfb8be41d23ea849384cd461c86",
+      "framework_source_sha256": "66e36a13fd9a23a0a0576ec81552d6e479671db6db9b8692cc7486c5aac4f3b8",
+      "tested_at": "2026-10-11T10:49:10.633852+00:00",
+      "status": "passed",
+      "installation_mode": "bundled",
+      "suite_paths": [
+        "tests/F5.01_microsoft_365.py",
+        "tests/F5.02_microsoft_365_runtime.py",
+        "tests/F8.01_microsoft_365_ui.py"
+      ],
+      "suite_count": 3,
+      "report_sha256": "0ae5423da3893c25f3320d6651953c304b852e39bc4be531adfefd1d7a79fc2e"
+    }
+  ]
+}
